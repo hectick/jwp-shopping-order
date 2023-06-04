@@ -3,6 +3,7 @@ package cart.domain;
 import cart.entity.OrderEntity;
 import cart.exception.CartItemException.IllegalMember;
 import cart.exception.CartItemException.TotalPriceNotSame;
+import cart.exception.OrderException.OveruseOfPoint;
 
 import java.util.List;
 import java.util.Objects;
@@ -58,6 +59,30 @@ public class Order {
         return OrderEntity.of(member.getId(), shippingFee, totalProductsPrice, usedPoint);
     }
 
+    public void checkOwner(final Member member) {
+        if (!Objects.equals(this.member.getId(), member.getId())) {
+            throw new IllegalMember();
+        }
+    }
+
+    public void checkTotalProductsPrice(final long totalProductsPrice) {
+        if (this.totalProductsPrice != totalProductsPrice) {
+            throw new TotalPriceNotSame();
+        }
+    }
+
+    public void checkShippingFee(final long shippingFee) {
+        if (this.shippingFee != shippingFee) {
+            throw new TotalPriceNotSame();
+        }
+    }
+
+    public void checkOveruseOfPoint() {
+        if(this.totalProductsPrice < this.usedPoint){
+            throw new OveruseOfPoint();
+        }
+    }
+
     public Long getId() {
         return id;
     }
@@ -78,32 +103,8 @@ public class Order {
         return orderItems;
     }
 
-    public void checkPrice(final long totalPrice) {
-        if (totalProductsPrice + shippingFee != totalPrice) {
-            throw new TotalPriceNotSame();
-        }
-    }
-
     public String getCreatedAt() {
         return createdAt;
-    }
-
-    public void checkOwner(final Member member) {
-        if (!Objects.equals(this.member.getId(), member.getId())) {
-            throw new IllegalMember();
-        }
-    }
-
-    public void checkTotalProductsPrice(final long totalProductsPrice) {
-        if (this.totalProductsPrice != totalProductsPrice) {
-            throw new TotalPriceNotSame();
-        }
-    }
-
-    public void checkShippingFee(final long shippingFee) {
-        if (this.shippingFee != shippingFee) {
-            throw new TotalPriceNotSame();
-        }
     }
 
     public long getUsedPoint() {
@@ -113,4 +114,5 @@ public class Order {
     public long getPayment() {
         return totalProductsPrice + shippingFee - usedPoint;
     }
+
 }

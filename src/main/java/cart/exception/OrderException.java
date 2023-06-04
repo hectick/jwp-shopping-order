@@ -29,4 +29,10 @@ public class OrderException extends RuntimeException {
             super("포인트는 양수여야 합니다");
         }
     }
+
+    public static class OveruseOfPoint extends OrderException {
+        public OveruseOfPoint() {
+            super("잘못된 요청입니다");
+        }
+    }
 }

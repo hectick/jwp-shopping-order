@@ -20,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static cart.acceptence.fixtures.ProductFixtures.츄파춥스_300원;
 import static cart.acceptence.fixtures.ProductFixtures.치킨_10000원;
 import static cart.acceptence.fixtures.ProductFixtures.피자_15000원;
 import static cart.acceptence.steps.CartItemSteps.장바구니_아이템_추가_요청;
@@ -249,6 +250,38 @@ public class OrderAcceptanceTest extends AcceptanceTest {
             assertThat(주문_등록_결과.jsonPath().getObject("payload", ExceptionResponse.class))
                     .usingRecursiveComparison()
                     .isEqualTo(new ExceptionResponse("포인트가 부족합니다"));
+        }
+
+        @Test
+        void 주문_금액보다_사용할_포인트가_많으면_주문할_수_없다() {
+            //given
+            long 피자_아이디 = 상품_추가하고_아이디_반환(피자_15000원);
+            long 치킨_아이디 = 상품_추가하고_아이디_반환(치킨_10000원);
+            장바구니_아이템_추가_요청(등록된_사용자1, 피자_아이디);
+            장바구니_아이템_추가_요청(등록된_사용자1, 치킨_아이디);
+            List<OrderItemDto> 장바구니 = 장바구니_조회_요청(등록된_사용자1).jsonPath()
+                    .getList(".", CartItemResponse.class)
+                    .stream()
+                    .map(장바구니_아이템 -> new OrderItemDto(장바구니_아이템.getId(), 장바구니_아이템.getQuantity()))
+                    .collect(Collectors.toList());
+            주문_등록_요청(등록된_사용자1, new OrderRequest(25_000L, 3_000L, 0L, 장바구니));
+
+            long 츄파춥스_아이디 = 상품_추가하고_아이디_반환(츄파춥스_300원);
+            장바구니_아이템_추가_요청(등록된_사용자1, 츄파춥스_아이디);
+            List<OrderItemDto> 장바구니2 = 장바구니_조회_요청(등록된_사용자1).jsonPath()
+                    .getList(".", CartItemResponse.class)
+                    .stream()
+                    .map(장바구니_아이템 -> new OrderItemDto(장바구니_아이템.getId(), 장바구니_아이템.getQuantity()))
+                    .collect(Collectors.toList());
+
+            // when
+            ExtractableResponse<Response> 주문_등록_결과 = 주문_등록_요청(등록된_사용자1, new OrderRequest(300L, 3000L, 3301L, 장바구니2));
+
+            // then
+            assertThat(주문_등록_결과.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+            assertThat(주문_등록_결과.jsonPath().getObject("payload", ExceptionResponse.class))
+                    .usingRecursiveComparison()
+                    .isEqualTo(new ExceptionResponse("잘못된 요청입니다"));
         }
     }
 

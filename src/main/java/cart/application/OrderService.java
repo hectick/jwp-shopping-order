@@ -61,6 +61,7 @@ public class OrderService {
         Order order = Order.of(member, shippingPolicy.calculateShippingFee(orderItems), usedPoint.getPoint(), orderItems);
         order.checkTotalProductsPrice(orderRequest.getTotalProductsPrice());
         order.checkShippingFee(orderRequest.getShippingFee());
+        order.checkOveruseOfPoint();
 
         Point totalPoint = new Point(pointService.findByMember(member));
         Point newEarnedPoint = pointPolicy.getEarnedPoint(order.getPayment());
