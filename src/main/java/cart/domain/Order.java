@@ -78,7 +78,7 @@ public class Order {
     }
 
     public void checkOveruseOfPoint() {
-        if(this.totalProductsPrice + this.shippingFee < this.usedPoint){
+        if(this.totalProductsPrice < this.usedPoint){
             throw new OveruseOfPoint();
         }
     }
@@ -113,6 +113,10 @@ public class Order {
 
     public long getPayment() {
         return totalProductsPrice + shippingFee - usedPoint;
+    }
+
+    public long getTotalProductsPriceWithPointDiscount(){
+        return totalProductsPrice - usedPoint;
     }
 
 }

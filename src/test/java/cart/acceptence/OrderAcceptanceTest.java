@@ -74,7 +74,7 @@ public class OrderAcceptanceTest extends AcceptanceTest {
             assertThat(주문_등록_결과.statusCode()).isEqualTo(HttpStatus.CREATED.value());
             assertThat(주문_등록_결과.header("Location")).isNotBlank();
             assertThat(주문_등록_결과.jsonPath().getLong("orderId")).isNotNull();
-            assertThat(주문_등록_결과.jsonPath().getLong("newEarnedPoint")).isEqualTo((long) (2_8000 * 0.1));
+            assertThat(주문_등록_결과.jsonPath().getLong("newEarnedPoint")).isEqualTo((long) (25_000 * 0.1));
         }
 
         @Test
@@ -106,7 +106,7 @@ public class OrderAcceptanceTest extends AcceptanceTest {
             assertThat(주문_등록_결과.statusCode()).isEqualTo(HttpStatus.CREATED.value());
             assertThat(주문_등록_결과.header("Location")).isNotBlank();
             assertThat(주문_등록_결과.jsonPath().getLong("orderId")).isNotNull();
-            assertThat(주문_등록_결과.jsonPath().getLong("newEarnedPoint")).isEqualTo((long) (2_5500 * 0.1));
+            assertThat(주문_등록_결과.jsonPath().getLong("newEarnedPoint")).isEqualTo((long) (2_2500 * 0.1));
         }
 
 
@@ -253,7 +253,7 @@ public class OrderAcceptanceTest extends AcceptanceTest {
         }
 
         @Test
-        void 주문_금액보다_사용할_포인트가_많으면_주문할_수_없다() {
+        void 주문_상품_금액보다_사용할_포인트가_많으면_주문할_수_없다() {
             //given
             long 피자_아이디 = 상품_추가하고_아이디_반환(피자_15000원);
             long 치킨_아이디 = 상품_추가하고_아이디_반환(치킨_10000원);
@@ -275,7 +275,7 @@ public class OrderAcceptanceTest extends AcceptanceTest {
                     .collect(Collectors.toList());
 
             // when
-            ExtractableResponse<Response> 주문_등록_결과 = 주문_등록_요청(등록된_사용자1, new OrderRequest(300L, 3000L, 3301L, 장바구니2));
+            ExtractableResponse<Response> 주문_등록_결과 = 주문_등록_요청(등록된_사용자1, new OrderRequest(300L, 3000L, 301L, 장바구니2));
 
             // then
             assertThat(주문_등록_결과.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());

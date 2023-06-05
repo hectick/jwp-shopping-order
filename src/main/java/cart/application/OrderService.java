@@ -64,7 +64,7 @@ public class OrderService {
         order.checkOveruseOfPoint();
 
         Point totalPoint = new Point(pointService.findByMember(member));
-        Point newEarnedPoint = pointPolicy.getEarnedPoint(order.getPayment());
+        Point newEarnedPoint = pointPolicy.getEarnedPoint(order.getTotalProductsPriceWithPointDiscount());
         Point updatedPoint = totalPoint.use(usedPoint)
                 .add(newEarnedPoint);
 
