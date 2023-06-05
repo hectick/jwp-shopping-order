@@ -30,7 +30,7 @@ public class OrderItemDao {
     };
 
     public void insert(final long orderId, final OrderItem orderItem) {
-        String sql = "INSERT INTO order_item (name, price, image_url, quantity, product_id, orders_id) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO order_item (name, price, image_url, quantity, product_id, order_id) VALUES (?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(
                 sql,
                 orderItem.getProduct().getName(),
@@ -43,7 +43,7 @@ public class OrderItemDao {
     }
 
     public List<OrderItem> findAllByOrderId(final long orderId) {
-        String sql = "SELECT * FROM order_item WHERE orders_id = ? ";
+        String sql = "SELECT * FROM order_item WHERE order_id = ? ";
         return jdbcTemplate.query(sql, rowMapper, orderId);
     }
 }

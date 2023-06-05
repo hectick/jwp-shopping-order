@@ -35,7 +35,7 @@ public class OrderDao {
     };
 
     public long save(final OrderEntity orderEntity) {
-        String sql = "INSERT INTO orders (member_id, shipping_fee, total_products_price, used_point) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO `order` (member_id, shipping_fee, total_products_price, used_point) VALUES (?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement pst = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -52,7 +52,7 @@ public class OrderDao {
 
     public Optional<OrderEntity> findById(final long id) {
         try {
-            String sql = "SELECT * FROM orders WHERE id = ?";
+            String sql = "SELECT * FROM `order` WHERE id = ?";
             return Optional.of(jdbcTemplate.queryForObject(sql, rowMapper, id));
         } catch (EmptyResultDataAccessException exception) {
             return Optional.empty();
@@ -60,7 +60,7 @@ public class OrderDao {
     }
 
     public List<OrderEntity> findAllByMemberId(final long memberId) {
-        String sql = "SELECT * FROM orders WHERE member_id = ?";
+        String sql = "SELECT * FROM `order` WHERE member_id = ?";
         return jdbcTemplate.query(sql, rowMapper, memberId);
     }
 }
