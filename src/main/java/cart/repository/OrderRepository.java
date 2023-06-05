@@ -29,7 +29,7 @@ public class OrderRepository {
 
     public long save(final Order order) {
         OrderEntity orderEntity = order.toEntity();
-        long orderId = orderDao.save(orderEntity);
+        long orderId = orderDao.insert(orderEntity);
         for (OrderItem orderItem : order.getOrderItems()) {
             orderItemDao.insert(orderId, orderItem);
         }

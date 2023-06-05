@@ -1,6 +1,6 @@
 
 TRUNCATE TABLE product;
 TRUNCATE TABLE cart_item;
-TRUNCATE TABLE `order`;
+TRUNCATE TABLE orders;
 TRUNCATE TABLE order_item;
 
