@@ -23,7 +23,7 @@ public class CartItemResponse {
                 ProductResponse.from(cartItem.getProduct())
         );
     }
-    
+
     public static List<CartItemResponse> from(List<CartItem> cartItems) {
         return cartItems.stream()
                 .map(CartItemResponse::from)
