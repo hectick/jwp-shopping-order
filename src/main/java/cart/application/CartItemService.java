@@ -33,9 +33,7 @@ public class CartItemService {
     public List<CartItemResponse> findByMember(Member member) {
         List<CartItem> cartItems = cartItemDao.findByMemberId(member.getId());
         Collections.reverse(cartItems);
-        return cartItems.stream()
-                .map(CartItemResponse::of)
-                .collect(Collectors.toList());
+        return CartItemResponse.from(cartItems);
     }
 
     public Long add(Member member, CartItemRequest cartItemRequest) {
