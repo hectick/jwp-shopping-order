@@ -25,8 +25,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(final CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOriginPatterns("*")
-                .allowedOrigins("*")
+                .allowedOriginPatterns("http://localhost:3000")
+                .allowedOrigins("http://localhost:3000")
                 .allowedHeaders("*")
                 .allowCredentials(false)
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
