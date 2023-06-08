@@ -7,6 +7,8 @@ import cart.domain.Member;
 import cart.domain.Order;
 import cart.domain.OrderItem;
 import cart.entity.OrderEntity;
+import cart.exception.AuthenticationException;
+import cart.exception.AuthenticationException.InvalidMember;
 import cart.exception.OrderException.InvalidOrder;
 import org.springframework.stereotype.Repository;
 
@@ -39,14 +41,16 @@ public class OrderRepository {
     public Order findByOrderId(final long orderId) {
         OrderEntity orderEntity = orderDao.findById(orderId)
                 .orElseThrow(InvalidOrder::new);
-        Member member = memberDao.getMemberById(orderEntity.getMemberId());
+        Member member = memberDao.getMemberById(orderEntity.getMemberId())
+                .orElseThrow(InvalidMember::new);
         List<OrderItem> orderItems = orderItemDao.findAllByOrderId(orderId);
         return Order.of(member, orderEntity, orderItems);
     }
 
     public List<Order> findByMemberId(final long memberId) {
         List<Order> orders = new ArrayList<>();
-        Member member = memberDao.getMemberById(memberId);
+        Member member = memberDao.getMemberById(memberId)
+                .orElseThrow(InvalidMember::new);
         List<OrderEntity> orderEntities = orderDao.findAllByMemberId(memberId);
         if (orderEntities.isEmpty()) {
             return Collections.emptyList();

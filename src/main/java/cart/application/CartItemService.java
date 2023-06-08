@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -58,11 +57,8 @@ public class CartItemService {
     }
 
     private CartItem findCartItem(final Long id) {
-        CartItem cartItem = cartItemDao.findById(id);
-        if (cartItem == null) {
-            throw new InvalidCartItem();
-        }
-        return cartItem;
+        return cartItemDao.findById(id)
+                .orElseThrow(InvalidCartItem::new);
     }
 
     public void remove(Member member, Long id) {

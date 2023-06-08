@@ -27,7 +27,7 @@ public class PointAcceptanceTest extends AcceptanceTest {
     void setUp() {
         super.setUp();
 
-        등록된_사용자 = memberDao.getMemberById(1L);
+        등록된_사용자 = memberDao.getMemberById(1L).get();
     }
 
     @Nested

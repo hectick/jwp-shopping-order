@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Transactional
@@ -101,11 +102,11 @@ public class OrderService {
     private List<CartItem> findCartItems(final OrderRequest orderRequest) {
         List<CartItem> cartItems = new ArrayList<>();
         for (OrderItemDto orderItemDto : orderRequest.getOrder()) {
-            CartItem cartItem = cartItemDao.findById(orderItemDto.getCartItemId());
-            if (cartItem == null) {
+            Optional<CartItem> cartItem = cartItemDao.findById(orderItemDto.getCartItemId());
+            if (cartItem.isEmpty()) {
                 continue;
             }
-            cartItems.add(cartItem);
+            cartItems.add(cartItem.get());
         }
         return cartItems;
     }

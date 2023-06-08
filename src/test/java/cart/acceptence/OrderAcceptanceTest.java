@@ -46,8 +46,8 @@ public class OrderAcceptanceTest extends AcceptanceTest {
     void setUp() {
         super.setUp();
 
-        등록된_사용자1 = memberDao.getMemberById(1L);
-        등록된_사용자2 = memberDao.getMemberById(2L);
+        등록된_사용자1 = memberDao.getMemberById(1L).get();
+        등록된_사용자2 = memberDao.getMemberById(2L).get();
     }
 
 
