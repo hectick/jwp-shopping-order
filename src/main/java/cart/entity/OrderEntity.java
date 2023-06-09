@@ -1,5 +1,7 @@
 package cart.entity;
 
+import cart.domain.Order;
+
 public class OrderEntity {
 
     private final Long id;
@@ -20,6 +22,17 @@ public class OrderEntity {
 
     public static OrderEntity of(final long memberId, final long shippingFee, final long totalPrice, final long usedPoint) {
         return new OrderEntity(null, memberId, shippingFee, totalPrice, usedPoint, null);
+    }
+
+    public static OrderEntity from(final Order order) {
+        return new OrderEntity(
+                order.getId(),
+                order.getMember().getId(),
+                order.getShippingFee(),
+                order.getTotalProductsPrice(),
+                order.getUsedPoint(),
+                null
+        );
     }
 
     public Long getId() {

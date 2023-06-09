@@ -29,7 +29,7 @@ public class OrderRepository {
     }
 
     public long save(final Order order) {
-        OrderEntity orderEntity = order.toEntity();
+        OrderEntity orderEntity = OrderEntity.from(order);
         long orderId = orderDao.insert(orderEntity);
         for (OrderItem orderItem : order.getOrderItems()) {
             orderItemDao.insert(orderId, orderItem);
@@ -43,7 +43,15 @@ public class OrderRepository {
         Member member = memberDao.getMemberById(orderEntity.getMemberId())
                 .orElseThrow(InvalidMember::new);
         List<OrderItem> orderItems = orderItemDao.findAllByOrderId(orderId);
-        return Order.of(member, orderEntity, orderItems);
+        return Order.of(
+                orderEntity.getId(),
+                member,
+                orderEntity.getShippingFee(),
+                orderEntity.getTotalProductsPrice(),
+                orderEntity.getUsedPoint(),
+                orderItems,
+                orderEntity.getCreatedAt()
+        );
     }
 
     public List<Order> findByMemberId(final long memberId) {
@@ -56,7 +64,15 @@ public class OrderRepository {
         }
         for (OrderEntity orderEntity : orderEntities) {
             List<OrderItem> orderItems = orderItemDao.findAllByOrderId(orderEntity.getId());
-            orders.add(Order.of(member, orderEntity, orderItems));
+            orders.add(Order.of(
+                    orderEntity.getId(),
+                    member,
+                    orderEntity.getShippingFee(),
+                    orderEntity.getTotalProductsPrice(),
+                    orderEntity.getUsedPoint(),
+                    orderItems,
+                    orderEntity.getCreatedAt()
+            ));
         }
         return orders;
     }
