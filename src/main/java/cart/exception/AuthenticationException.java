@@ -2,13 +2,19 @@ package cart.exception;
 
 public class AuthenticationException extends RuntimeException {
 
-    public AuthenticationException(String message) {
-        super(message);
+    private final ExceptionCode exceptionCode;
+
+    public AuthenticationException(ExceptionCode exceptionCode) {
+        this.exceptionCode = exceptionCode;
+    }
+
+    public ExceptionCode getExceptionCode() {
+        return exceptionCode;
     }
 
     public static class InvalidMember extends AuthenticationException {
         public InvalidMember() {
-            super("존재하지 않는 회원입니다");
+            super(ExceptionCode.AE0001);
         }
     }
 }

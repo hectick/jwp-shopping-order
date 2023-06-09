@@ -3,8 +3,8 @@ package cart.repository;
 import cart.dao.ShippingFeeDao;
 import cart.dao.ShippingPolicyDao;
 import cart.domain.ShippingPolicy;
-import cart.exception.PolicyException.NoShippingDiscountThreshold;
-import cart.exception.PolicyException.NoShippingFee;
+import cart.exception.OrderPolicyException.NoShippingDiscountThreshold;
+import cart.exception.OrderPolicyException.NoShippingFee;
 import org.springframework.stereotype.Repository;
 
 @Repository

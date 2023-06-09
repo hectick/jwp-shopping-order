@@ -2,19 +2,25 @@ package cart.exception;
 
 public class ProductException extends RuntimeException {
 
-    public ProductException(String message) {
-        super(message);
+    private final ExceptionCode exceptionCode;
+
+    public ProductException(ExceptionCode exceptionCode) {
+        this.exceptionCode = exceptionCode;
+    }
+
+    public ExceptionCode getExceptionCode() {
+        return exceptionCode;
     }
 
     public static class InvalidProduct extends ProductException {
         public InvalidProduct() {
-            super("존재하지 않는 상품입니다");
+            super(ExceptionCode.PE0001);
         }
     }
 
     public static class DuplicatedProduct extends ProductException {
         public DuplicatedProduct() {
-            super("이미 존재하는 상품입니다");
+            super(ExceptionCode.PE0002);
         }
     }
 }
